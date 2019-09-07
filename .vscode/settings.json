@@ -1,0 +1,5 @@
+{
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "black",
+    "python.pythonPath": "C:\\Users\\yanns\\Miniconda3\\envs\\geojsplit\\python.exe"
+}
