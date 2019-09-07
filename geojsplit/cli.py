@@ -1,12 +1,11 @@
 import argparse
-import json
 import logging
 import sys
 from logging.config import dictConfig
 from pathlib import Path
 from typing import List
 
-import geojson
+import simplejson as json
 
 from . import __version__
 from .geojsplit import GeoJSONStreamer
@@ -33,8 +32,7 @@ def input_geojson(args):
             gj.stream(
                 batch=args.geometry_count,
                 **{k: v for k, v in vars(args).items() if k != "geojson"},
-            ),
-            1,
+            )
         ):
             new_filename = gen_filename(
                 gj.geojson, count, width=args.suffix_length, parent=args.output
@@ -45,14 +43,15 @@ def input_geojson(args):
                         logger.debug(f"creating output directory {args.output}")
                         new_filename.parent.mkdir(parents=True, exist_ok=True)
                     with new_filename.open("w") as fp:
-                        geojson.dump(features, fp)
+                        json.dump(features, fp)
                 logger.debug(
                     f"successfully saved {len(features['features'])} features to {new_filename}"
                 )
             except IOError as e:
                 logger.error(f"Could not write features to {new_filename}", exc_info=e)
 
-            if count >= args.limit:
+            # account for 0 based index of enumerate that is required for `pad` method.
+            if count >= args.limit - 1:
                 break
 
 
