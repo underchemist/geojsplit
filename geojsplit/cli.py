@@ -8,6 +8,7 @@ from typing import List
 
 import geojson
 
+from . import __version__
 from .geojsplit import GeoJSONStreamer
 
 
@@ -32,7 +33,8 @@ def input_geojson(args):
             gj.stream(
                 batch=args.geometry_count,
                 **{k: v for k, v in vars(args).items() if k != "geojson"},
-            )
+            ),
+            1,
         ):
             new_filename = gen_filename(
                 gj.geojson, count, width=args.suffix_length, parent=args.output
@@ -50,7 +52,7 @@ def input_geojson(args):
             except IOError as e:
                 logger.error(f"Could not write features to {new_filename}", exc_info=e)
 
-            if count >= args.limit - 1:
+            if count >= args.limit:
                 break
 
 
@@ -114,12 +116,6 @@ def setup_parser():
         help="the number of features to be distributed to each file.",
     )
     parser.add_argument(
-        "-m",
-        "--max-lines",
-        type=int,
-        help="the number of lines to search through looking for a geojson features object",
-    )
-    parser.add_argument(
         "-a",
         "--suffix-length",
         type=int,
@@ -132,7 +128,7 @@ def setup_parser():
         "-n",
         "--limit",
         type=int,
-        help="limit number of split geojson files to at most n",
+        help="limit number of split geojson file to at most LIMIT, with GEOMETRY_COUNT number of features.",
     )
     parser.add_argument(
         "-v", "--verbose", help="increase output verbosity", action="store_true"
@@ -142,6 +138,12 @@ def setup_parser():
         "--dry-run",
         help="see output without actually writing to file",
         action="store_true",
+    )
+    parser.add_argument(
+        "--version",
+        help="show %(prog)s version number",
+        action="version",
+        version=f"%(prog)s {__version__}",
     )
 
     return parser

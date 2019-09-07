@@ -8,6 +8,8 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.7"
 geojson = "^2.5"
+ijson = "^2.4"
+simplejson = "^3.16"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.1"
