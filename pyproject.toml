@@ -12,7 +12,7 @@ ijson = "^2.4"
 simplejson = "^3.16"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.1"
+pytest = "5.0.1"
 pylint = "^2.3"
 black = {version = "^18.3-alpha.0", allows-prereleases = true}
 mypy = "^0.720.0"
