@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Iterator, List, Union, Dict, Optional, Any
+from typing import Any, Dict, Iterator, List, Optional, Union
 
 import geojson
 import ijson
@@ -34,4 +34,3 @@ class GeoJSONBatchStreamer:
                 if data:
                     yield geojson.FeatureCollection(data)  # yield remainder of data
                 return
-

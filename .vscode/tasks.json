@@ -10,10 +10,11 @@
             "args": [
                 "--ignore-missing-imports",
                 "--strict",
-                "${file}"
+                "geojsplit",
+                "tests"
             ],
             "group": "build",
             "problemMatcher": []
-        }
+        },
     ]
 }
