@@ -3,10 +3,10 @@ import logging
 import sys
 from logging.config import dictConfig
 from pathlib import Path
-from typing import List, Dict, Union, Optional, Any
+from typing import Any, Dict, List, Optional, Union
 
-import simplejson as json
 import geojson
+import simplejson as json
 
 from . import __version__
 from .geojsplit import GeoJSONBatchStreamer
@@ -36,27 +36,28 @@ def input_geojson(args: argparse.Namespace) -> None:
     logger: logging.Logger = logging.getLogger(__name__)
     logger.debug(f"starting splitting with geojson {args.geojson}")
     gj: GeoJSONBatchStreamer = GeoJSONBatchStreamer(args.geojson)
-    if args.limit > 0:
-        count: int
-        features: geojson.feature.FeatureCollection
-        for count, features in enumerate(gj.stream(batch=args.geometry_count)):
-            new_filename: Path = gen_filename(
-                gj.geojson, count, width=args.suffix_length, parent=args.output
-            )
-            try:
-                if not args.dry_run:
-                    if not new_filename.parent.exists():
-                        logger.debug(f"creating output directory {args.output}")
-                        new_filename.parent.mkdir(parents=True, exist_ok=True)
-                    with new_filename.open("w") as fp:
-                        json.dump(features, fp)
-                logger.debug(
-                    f"successfully saved {len(features['features'])} features to {new_filename}"
-                )
-            except IOError as e:
-                logger.error(f"Could not write features to {new_filename}", exc_info=e)
 
-            # account for 0 based index of enumerate that is required for `pad` method.
+    count: int
+    features: geojson.feature.FeatureCollection
+    for count, features in enumerate(gj.stream(batch=args.geometry_count)):
+        new_filename: Path = gen_filename(
+            gj.geojson, count, width=args.suffix_length, parent=args.output
+        )
+        try:
+            if not args.dry_run:
+                if not new_filename.parent.exists():
+                    logger.debug(f"creating output directory {args.output}")
+                    new_filename.parent.mkdir(parents=True, exist_ok=True)
+                with new_filename.open("w") as fp:
+                    json.dump(features, fp)
+            logger.debug(
+                f"successfully saved {len(features['features'])} features to {new_filename}"
+            )
+        except IOError as e:
+            logger.error(f"Could not write features to {new_filename}", exc_info=e)
+
+        # account for 0 based index of enumerate that is required for `pad` method.
+        if args.limit is not None:
             if count >= args.limit - 1:
                 break
 
@@ -111,6 +112,13 @@ def setup_logger() -> None:
     dictConfig(dct)
 
 
+def limit_type(x):
+    x = int(x)
+    if x <= 0:
+        raise argparse.ArgumentTypeError("LIMIT must be > 1")
+    return x
+
+
 def setup_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="geojsplit", description="Split a geojson file into many geojson files."
@@ -134,7 +142,7 @@ def setup_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "-n",
         "--limit",
-        type=int,
+        type=limit_type,
         help="limit number of split geojson file to at most LIMIT, with GEOMETRY_COUNT number of features.",
     )
     parser.add_argument(
