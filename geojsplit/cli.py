@@ -3,38 +3,44 @@ import logging
 import sys
 from logging.config import dictConfig
 from pathlib import Path
-from typing import List
+from typing import List, Dict, Union, Optional, Any
 
 import simplejson as json
+import geojson
 
 from . import __version__
-from .geojsplit import GeoJSONStreamer
+from .geojsplit import GeoJSONBatchStreamer
 
 
-def input_geojson(args):
-    def gen_filename(filename: Path, file_count, width=None, parent=None):
+def input_geojson(args: argparse.Namespace) -> None:
+    """Entrypoint function to iter through a valid geojson document and save to multiple files"""
+
+    def gen_filename(
+        filename: Path,
+        file_count: int,
+        width: Optional[int] = None,
+        parent: Optional[Path] = None,
+    ) -> Path:
+        """Generate unique filename according to number of iterations thus far."""
         if width is None:
             width = 4
         if parent is None:
             parent = filename.parent
         elif isinstance(parent, str):
             parent = Path(parent)
-        suffix = filename.suffix
-        stem = filename.stem
+        suffix: str = filename.suffix
+        stem: str = filename.stem
 
         return parent / (stem + "_x" + pad(file_count, width) + suffix)
 
-    logger = logging.getLogger(__name__)
+    logger: logging.Logger = logging.getLogger(__name__)
     logger.debug(f"starting splitting with geojson {args.geojson}")
-    gj = GeoJSONStreamer(args.geojson)
+    gj: GeoJSONBatchStreamer = GeoJSONBatchStreamer(args.geojson)
     if args.limit > 0:
-        for count, features in enumerate(
-            gj.stream(
-                batch=args.geometry_count,
-                **{k: v for k, v in vars(args).items() if k != "geojson"},
-            )
-        ):
-            new_filename = gen_filename(
+        count: int
+        features: geojson.feature.FeatureCollection
+        for count, features in enumerate(gj.stream(batch=args.geometry_count)):
+            new_filename: Path = gen_filename(
                 gj.geojson, count, width=args.suffix_length, parent=args.output
             )
             try:
@@ -73,6 +79,7 @@ def pad(file_count: int, width: int) -> str:
         sys.exit(1)
 
     char_array: List[str] = []
+    digit: int
     for digit in range(width - 1, -1, -1):
         digit_cap: int = len(alphabet) ** digit
         idx: int = file_count // digit_cap
@@ -82,8 +89,8 @@ def pad(file_count: int, width: int) -> str:
     return "".join(char_array)
 
 
-def setup_logger():
-    dct = {
+def setup_logger() -> None:
+    dct: Dict[str, Any] = {
         "version": 1,
         "formatters": {
             "formatter": {
@@ -100,10 +107,11 @@ def setup_logger():
         },
         "root": {"level": "ERROR", "handlers": ["stream_handler"]},
     }
+
     dictConfig(dct)
 
 
-def setup_parser():
+def setup_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="geojsplit", description="Split a geojson file into many geojson files."
     )
@@ -148,11 +156,11 @@ def setup_parser():
     return parser
 
 
-def main():
+def main() -> None:
     setup_logger()
-    logger = logging.getLogger(__name__)
-    parser = setup_parser()
-    args = parser.parse_args()
+    logger: logging.Logger = logging.getLogger(__name__)
+    parser: argparse.ArgumentParser = setup_parser()
+    args: argparse.Namespace = parser.parse_args()
 
     if args.verbose:
         logger.setLevel(logging.DEBUG)
