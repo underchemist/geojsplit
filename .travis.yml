@@ -1,0 +1,41 @@
+language: python
+
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+      python: 3.6
+    - os: linux
+      dist: xenial
+      python: 3.7
+
+stages:
+  - test
+  - deploy
+
+before_install:
+  - pip install poetry
+
+install:
+  - poetry install
+
+jobs:
+  include:
+    - stage: test
+      name: test
+      script: pytest --cov=geojsplit
+    - stage: deploy
+      script: skip
+      before_deploy:
+        - poetry config http-basic.pypi $PYPI_USER %PYPI_PASS
+        - poetry build
+      deploy:
+        provider: script
+        script: poetry publish
+        skip_cleanup: true
+        on:
+          tags: true
+      if: tag IS present
+
+after_success:
+  - coveralls
