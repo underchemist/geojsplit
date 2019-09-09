@@ -13,7 +13,7 @@ install:
   - poetry install
 script: pytest --cov=geojsplit
 before_deploy:
-  - poetry config http-basic.pypi $PYPI_USER %PYPI_PASS
+  - poetry config http-basic.pypi $PYPI_USER $PYPI_PASS
   - poetry build
 deploy:
   provider: script

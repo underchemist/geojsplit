@@ -5,6 +5,7 @@ A python implementation of the node package geojsplit: https://github.com/woodb/
 [![Coverage Status](https://coveralls.io/repos/github/underchemist/geojsplit/badge.svg?branch=master)](https://coveralls.io/github/underchemist/geojsplit?branch=master)
 ![PyPI](https://img.shields.io/pypi/v/geojsplit)
 ![GitHub](https://img.shields.io/github/license/underchemist/geojsplit)
+
 ## Installation
 
 ### With poetry
