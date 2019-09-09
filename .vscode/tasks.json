@@ -16,5 +16,15 @@
             "group": "build",
             "problemMatcher": []
         },
+        {
+            "label": "docs",
+            "type": "shell",
+            "command": "conda activate geojsplit && make clean && make html",
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}/docs"
+            },
+            "problemMatcher": []
+        }
     ]
 }
