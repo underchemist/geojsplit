@@ -1,6 +1,8 @@
 # geojsplit
 A python implementation of the node package geojsplit: https://github.com/woodb/geojsplit
 
+[![Documentation Status](https://readthedocs.org/projects/geojsplit/badge/?version=latest)](https://geojsplit.readthedocs.io/en/latest/?badge=latest)
+
 ## Installation
 
 ### With poetry

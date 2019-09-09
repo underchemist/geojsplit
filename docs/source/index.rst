@@ -7,7 +7,9 @@ Welcome to geojsplit's documentation!
 =====================================
 Version |version|.
 
-.. badges go here
+.. image:: https://readthedocs.org/projects/geojsplit/badge/?version=latest
+   :target: https://geojsplit.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
 
 Geojsplit is a useful tool for splitting large GeoJSON files into multiple files. Inspired
 by https://github.com/woodb/geojsplit.
