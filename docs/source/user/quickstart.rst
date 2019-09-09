@@ -19,7 +19,7 @@ ogr2ogr tool.
 As a library
 ^^^^^^^^^^^^
 
-Once installed, geojsplit can be imported in like::
+Once installed, geojsplit can be imported in like ::
 
     from geojsplit import geojsplit
 
@@ -32,7 +32,7 @@ Once installed, geojsplit can be imported in like::
 If the ``/path/to/some.geojson`` does not exists, ``FileNotFound`` will be raised.
 
 You can control how many features are streamed into a Feature Collection using the
-``batch`` parameter (Default is 100).::
+``batch`` parameter (Default is 100). ::
 
     >>> g = geojson.stream(batch=2)  # instatiate generator object
     >>> data = next(g)

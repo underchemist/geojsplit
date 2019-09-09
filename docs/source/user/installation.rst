@@ -15,13 +15,13 @@ For an `introduction to poetry <https://dev.to/yukinagae/beginner-guide-on-poetr
 
     $ poetry add geojsplit
 
-will add geojsplit to your current virtual environment and update your poetry.lock file. If you would like to contribute or develop geojsplit::
+will add geojsplit to your current virtual environment and update your poetry.lock file. If you would like to contribute or develop geojsplit ::
 
     $ git clone https://github.com/underchemist/geojsplit.git
     $ cd geojsplit
     $ poetry install
 
-.. note:: You may need some extra configuration to make poetry play nice with conda virtual environments.::
+.. note:: You may need some extra configuration to make poetry play nice with conda virtual environments. ::
 
     $ poetry config settings.virtualenvs.path $CONDA_ENV_PATH
     $ poetry config settings.virtualenvs.create 0
@@ -31,9 +31,9 @@ will add geojsplit to your current virtual environment and update your poetry.lo
 With pip
 --------
 
-Though **geojsplit** is developed using poetry_ (and as such
+Though geojsplit is developed using poetry_ (and as such
 does not have a setup.py), pep517_
-implementation in pip means we can install it directly.::
+implementation in pip means we can install it directly. ::
 
     $ pip install geojsplit
 
