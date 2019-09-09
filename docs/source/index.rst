@@ -7,6 +7,8 @@ Welcome to geojsplit's documentation!
 =====================================
 Version |version|.
 
+.. image:: https://travis-ci.com/underchemist/geojsplit.svg?branch=master
+   :target: https://travis-ci.com/underchemist/geojsplit
 .. image:: https://readthedocs.org/projects/geojsplit/badge/?version=latest
    :target: https://geojsplit.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
