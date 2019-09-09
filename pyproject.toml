@@ -3,6 +3,9 @@ name = "geojsplit"
 version = "0.1.0"
 description = "A python implementation of the npm package geojsplit. Used to split GeoJSON files into smaller pieces."
 authors = ["Yann-Sebastien Tremblay-Johnston <yanns.tremblay@gmail.com>"]
+readme = "README.md"
+documentation = "https://geojsplit.readthedocs.io/en/latest/"
+keywords = ["geospatial", "geojson", "gis", "python", "stream"]
 license = "MIT"
 
 [tool.poetry.dependencies]
