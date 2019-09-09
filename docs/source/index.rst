@@ -10,6 +10,12 @@ Version |version|.
 .. image:: https://readthedocs.org/projects/geojsplit/badge/?version=latest
    :target: https://geojsplit.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
+.. image:: https://coveralls.io/repos/github/underchemist/geojsplit/badge.svg?branch=master
+   :target: https://coveralls.io/github/underchemist/geojsplit?branch=master
+.. image:: https://img.shields.io/pypi/v/geojsplit
+   :alt: PyPI
+.. image:: https://img.shields.io/github/license/underchemist/geojsplit
+   :alt: GitHub
 
 Geojsplit is a useful tool for splitting large GeoJSON files into multiple files. Inspired
 by https://github.com/woodb/geojsplit.
