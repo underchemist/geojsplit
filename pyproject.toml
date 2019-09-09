@@ -10,6 +10,8 @@ python = "^3.7"
 geojson = "^2.5"
 ijson = "^2.4"
 simplejson = "^3.16"
+sphinx = {version = "^2.2", optional = true}
+sphinx_rtd_theme = {version = "^0.4.3", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "5.0.1"
