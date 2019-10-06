@@ -40,9 +40,12 @@ def input_geojson(args: argparse.Namespace) -> None:
     count: int
     features: geojson.feature.FeatureCollection
     for count, features in enumerate(gj.stream(batch=args.geometry_count)):
-        new_filename: Path = gen_filename(
-            gj.geojson, count, width=args.suffix_length, parent=args.output
-        )
+        try:
+            new_filename: Path = gen_filename(
+                gj.geojson, count, width=args.suffix_length, parent=args.output
+            )
+        except TypeError as e:
+            logger.error(f"Could not generate a unique suffix.", exc_info=e)
         try:
             if not args.dry_run:
                 if not new_filename.parent.exists():
@@ -77,7 +80,7 @@ def pad(file_count: int, width: int) -> str:
         logger.error(
             f"Suffix of width of {width} is not enough to generate a unique filename. Increase "
         )
-        sys.exit(1)
+        return
 
     char_array: List[str] = []
     digit: int
@@ -164,11 +167,11 @@ def setup_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main() -> None:
+def main(args=None) -> None:
     setup_logger()
     logger: logging.Logger = logging.getLogger(__name__)
     parser: argparse.ArgumentParser = setup_parser()
-    args: argparse.Namespace = parser.parse_args()
+    args: argparse.Namespace = parser.parse_args(args=args)
 
     if args.verbose:
         logger.setLevel(logging.DEBUG)
