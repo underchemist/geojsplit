@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath("../../"))
 project = "geojsplit"
 copyright = "2019, Yann-Sebastien Tremblay-Johnston"
 author = "Yann-Sebastien Tremblay-Johnston"
-version = "0.1.1"
+version = "0.1.2"
 release = version
 
 
