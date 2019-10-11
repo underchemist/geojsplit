@@ -106,3 +106,4 @@ venv.bak/
 # vscode settings
 .vscode/settings.json
 .vscode/launch.json
+.vscode/geojsplit.code-workspace
