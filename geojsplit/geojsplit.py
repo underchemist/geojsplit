@@ -32,11 +32,11 @@ class GeoJSONBatchStreamer:
     def __init__(self, geojson: Union[str, Path]) -> None:
         """
         Constructor for GeoJSONBatchStreamer
-        
+
         Args:
             geojson (Union[str, Path]): Filepath for a valid geojson document. Will
                 attempt to convert to a Path object regardless of input type.
-        
+
         Raises:
             FileNotFoundError: If `geojson` does not exist.
         """
@@ -49,16 +49,16 @@ class GeoJSONBatchStreamer:
     ) -> Iterator[geojson.feature.FeatureCollection]:
         """
         Generator method to yield batches of geojson Features in a Feature Collection.
-        
+
         Args:
             batch (Optional[int], optional): The number of features in a single batch. Defaults to 100.
             prefix (Optional[str], optional): The prefix of the element of interest in the
                 geojson document. Usually this should be `'features.item'`. Only change this if
                 you now what you are doing. See https://github.com/ICRAR/ijson for more info.
                 Defaults to `'features.item'`.
-        
+
         Yields:
-            (Iterator[geojson.feature.FeatureCollection]): 
+            (Iterator[geojson.feature.FeatureCollection]):
                 The next batch of features wrapped in a new Feature Collection. This itself is
                 just a subclass of a Dict instance, containing typical geojson attributes
                 including a JSON array of Features. When `StopIteration` is raised, will yield
