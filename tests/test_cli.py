@@ -35,12 +35,12 @@ def test_pad_filecount_too_large():
     # filecount > 26 ** 1 = 26
     file_count = 27
     width = 1
-    assert cli.pad(file_count, width) is None
+    assert cli.pad(file_count, width) == ""
 
 
 @pytest.mark.parametrize(
     "file_count,expected",
-    [(0, "aaaa"), (1, "aaab"), ((25 ** 4) - 1, "zzzz"), (25 ** 4, None)],
+    [(0, "aaaa"), (1, "aaab"), ((25 ** 4) - 1, "zzzz"), (25 ** 4, "")],
 )
 def test_pad_output(file_count, expected):
     assert cli.pad(file_count, width=4) == expected

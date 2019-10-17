@@ -20,7 +20,7 @@ def input_geojson(args: argparse.Namespace) -> None:
         file_count: int,
         width: Optional[int] = None,
         parent: Optional[Path] = None,
-    ) -> Path:
+    ) -> Optional[Path]:
         """Generate unique filename according to number of iterations thus far."""
         if width is None:
             width = 4
@@ -30,6 +30,10 @@ def input_geojson(args: argparse.Namespace) -> None:
             parent = Path(parent)
         suffix: str = filename.suffix
         stem: str = filename.stem
+        padded_str: str = pad(file_count, width)
+
+        if not padded_str:
+            return None
 
         return parent / (stem + "_x" + pad(file_count, width) + suffix)
 
@@ -40,12 +44,14 @@ def input_geojson(args: argparse.Namespace) -> None:
     count: int
     features: geojson.feature.FeatureCollection
     for count, features in enumerate(gj.stream(batch=args.geometry_count)):
-        try:
-            new_filename: Path = gen_filename(
-                gj.geojson, count, width=args.suffix_length, parent=args.output
+        new_filename: Optional[Path] = gen_filename(
+            gj.geojson, count, width=args.suffix_length, parent=args.output
+        )
+        if not new_filename:
+            logger.error(
+                f"require more than {args.suffix_length} characters to generate unique filename for file {count}, try increasing with -a or --suffix-length flags (default is 4)"
             )
-        except TypeError as e:
-            logger.error(f"Could not generate a unique suffix.", exc_info=e)
+            raise ValueError
         try:
             if not args.dry_run:
                 if not new_filename.parent.exists():
@@ -71,16 +77,12 @@ def pad(file_count: int, width: int) -> str:
 
     Arguments:
         file_count (int): The current file count.
-        width (int): 
+        width (int):
     """
-    logger: logging.Logger = logging.getLogger(__name__)
     alphabet: str = "abcdefghijklmopqrstuvwxyz"
 
     if file_count >= len(alphabet) ** width:
-        logger.error(
-            f"Suffix of width of {width} is not enough to generate a unique filename. Increase "
-        )
-        return
+        return ""
 
     char_array: List[str] = []
     digit: int
@@ -115,11 +117,11 @@ def setup_logger() -> None:
     dictConfig(dct)
 
 
-def limit_type(x):
-    x = int(x)
-    if x <= 0:
+def limit_type(x: str) -> int:
+    x_int: int = int(x)
+    if x_int <= 0:
         raise argparse.ArgumentTypeError("LIMIT must be > 1")
-    return x
+    return x_int
 
 
 def setup_parser() -> argparse.ArgumentParser:
@@ -167,21 +169,23 @@ def setup_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(args=None) -> None:
+def main(args: Optional[List[str]] = None) -> None:
     setup_logger()
     logger: logging.Logger = logging.getLogger(__name__)
     parser: argparse.ArgumentParser = setup_parser()
-    args: argparse.Namespace = parser.parse_args(args=args)
+    parsed_args: argparse.Namespace = parser.parse_args(args=args)
 
-    if args.verbose:
+    if parsed_args.verbose:
         logger.setLevel(logging.DEBUG)
 
     logger.debug(f"called {__name__} with arguments:")
-    for arg_name, arg_value in vars(args).items():
+    arg_name: str
+    arg_value: Optional[Union[int, bool]]
+    for arg_name, arg_value in vars(parsed_args).items():
         if arg_value is not None:
             logger.debug(f"{arg_name}: {arg_value}")
 
-    input_geojson(args)
+    input_geojson(parsed_args)
     logger.debug(f"finished splitting geojson")
 
 
