@@ -9,42 +9,12 @@ A python implementation of the node package geojsplit: https://github.com/woodb/
 
 ## Installation
 
-### With poetry
-
-For an [introduction to poetry](https://dev.to/yukinagae/beginner-guide-on-poetry-new-python-dependency-management-tool-4327/).
-
-```
-$ poetry add geojsplit
-```
-
-will add geojsplit to your current virtual environment and update your poetry.lock file. If you would like to contribute or develop geojsplit
-
-```
-$ git clone https://github.com/underchemist/geojsplit.git
-$ cd geojsplit
-$ poetry install
-```
-
-You may need some extra configuration to make poetry play nice with conda virtual environments
-
-```
-poetry config settings.virtualenvs.path <path_to_conda_install>/envs  # tell poetry where you virtualenvs are stored
-poetry config settings.virtualenvs.create 0  # tell poetry not to try to create its own virtualenvs.
-```
-
-See https://github.com/sdispater/poetry/issues/105#issuecomment-498042062 for more info.
-
-```
-$ poetry config settings.virtualenvs.path $CONDA_ENV_PATH
-$ poetry config settings.virtualenvs.create 0
-```
-
 ### With pip
-Though geojsplit is developed using [poetry](https://poetry.eustace.io/) (and as such does not have a setup.py), [pep517](https://www.python.org/dev/peps/pep-0517/) implementation in pip means we can install it directly
 
 ```
 $ pip install geojsplit
 ```
+
 
 ## Usage
 
@@ -122,3 +92,35 @@ By default splitted GeoJSON files are saved as `filename_x<SUFFIX_LENGTH charact
 The `--geometry-count` flag corresponds to the batch keyword argument for `GeoJSONBatchStreamer.stream` method. Note that if GEOMETRY_COUNT does not divide equally into the number of features in the Feature Collection, the last batch of features will be < GEOMETRY_COUNT.
 
 Finally, to only iterate over the the first n elements of a GeoJSON document, use `--limit`.
+
+## Development
+
+### With poetry
+
+For an [introduction to poetry](https://dev.to/yukinagae/beginner-guide-on-poetry-new-python-dependency-management-tool-4327/).
+
+```
+$ poetry add geojsplit
+```
+
+will add geojsplit to your current virtual environment and update your poetry.lock file. If you would like to contribute or develop geojsplit
+
+```
+$ git clone https://github.com/underchemist/geojsplit.git
+$ cd geojsplit
+$ poetry install
+```
+
+You may need some extra configuration to make poetry play nice with conda virtual environments
+
+```
+poetry config settings.virtualenvs.path <path_to_conda_install>/envs  # tell poetry where you virtualenvs are stored
+poetry config settings.virtualenvs.create 0  # tell poetry not to try to create its own virtualenvs.
+```
+
+See https://github.com/sdispater/poetry/issues/105#issuecomment-498042062 for more info.
+
+```
+$ poetry config settings.virtualenvs.path $CONDA_ENV_PATH
+$ poetry config settings.virtualenvs.create 0
+```
