@@ -107,3 +107,6 @@ venv.bak/
 .vscode/settings.json
 .vscode/launch.json
 .vscode/geojsplit.code-workspace
+
+# poetry
+poetry.lock
